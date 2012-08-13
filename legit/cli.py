@@ -186,6 +186,138 @@ def cmd_sync(args):
         sys.exit(1)
 
 
+#####################################################################
+
+def cmd_update(args):
+
+    """Stashes unstaged changes, does a pull no-ff  and Unstashes changes.
+
+    Defaults to current branch.
+    """
+
+    if args.get(0):
+        # Optional branch specifier.
+        branch = fuzzy_match_branch(args.get(0))
+        if branch:
+            is_external = True
+            original_branch = repo.head.ref.name
+        else:
+            print "{0} doesn't exist. Use a branch that does.".format(
+                colored.yellow(args.get(0)))
+            sys.exit(1)
+    else:
+        # Sync current branch.
+        branch = repo.head.ref.name
+        is_external = False
+
+    if branch in get_branch_names(local=False):
+
+        if is_external:
+            switch_to(branch)
+
+        if repo.is_dirty():
+            status_log(stash_it, 'Saving local changes.', sync=True)
+
+        status_log(pull_noff, 'Pulling commits from the server.')
+
+        if unstash_index(sync=True):
+            status_log(unstash_it, 'Restoring local changes.', sync=True)
+
+        if is_external:
+            switch_to(original_branch)
+
+    else:
+        print '{0} has not been published yet.'.format(
+            colored.yellow(branch))
+        sys.exit(1)
+
+def cmd_merge_master(args):
+
+    """Stashes unstaged changes, merge current branch with master  
+    and Unstashes changes.
+
+    Defaults to current branch.
+    """
+
+    branch = repo.head.ref.name
+       
+    if branch in get_branch_names(local=False):
+
+        if repo.is_dirty():
+            status_log(stash_it, 'Saving local changes.', sync=True)
+
+        switch_to("master")        
+
+        status_log(merge_noff , 'Merging master with current branch', branch_name=branch)
+
+        if unstash_index(sync=True):
+            status_log(unstash_it, 'Restoring local changes.', sync=True)
+
+        switch_to(branch)
+
+    else:
+        print '{0} has not been published yet.'.format(
+            colored.yellow(branch))
+        sys.exit(1)
+
+def cmd_dev_merge(args):
+    """Stashes unstaged changes, updates developement, 
+    merge it with current branch and Unstashes changes.
+
+    Defaults to current branch.
+    """
+    branch = repo.head.ref.name
+    
+    if branch in get_branch_names(local=False):
+
+        if repo.is_dirty():
+            status_log(stash_it, 'Saving local changes.', sync=True)
+
+        repo.git.execute([legit_r, 'update', 'development'])
+
+        switch_to(branch)
+        
+        status_log(merge_noff, 'Merging dev in current branch', branch_name="development")
+    
+    else:
+        print '{0} has not been published yet.'.format(
+            colored.yellow(branch))
+        sys.exit(1)
+
+def cmd_merge_close(args):
+    """merge current branch in dev and close it
+    Defaults to current branch.
+    """
+    b = repo.head.ref.name   
+    branch = b
+
+    if repo.is_dirty():
+
+        print 'you have unpushed changes, please commit/checkout and push them before deleting the branch'
+    elif b=='development':
+        print 'you cannot delete the branch "development" with this function'
+    else:
+        switch_to("development")    
+        status_log(merge_noff, 'Merging current branch in dev',branch_name=branch)
+        status_log(close_branch, 'Closing current branch',branch_name=branch)
+
+def cmd_new_branch(args):
+
+    if args.get(0):
+        # Optional branch specifier.
+        branch = args.get(0)
+        
+        repo_check()
+        status_log(create_branch, 'creating a new branch',branch_name=branch)
+        status_log(push_branch, 'pushing the new branch',branch_name=branch)
+        status_log(link_branch, 'linking the branch', branch_name=branch)
+        
+    else:
+        print "no branch name specified. \n usage : new_branch <name>"
+    
+
+#######################################################################
+
 def cmd_sprout(args):
     """Creates a new branch of given name from given branch.
     Defaults to current branch.
@@ -399,7 +531,7 @@ def cmd_install(args):
         'unpublish': '\'!legit unpublish "$@"\'',
         'sprout': '\'!legit sprout "$@"\'',
         'sync': '\'!legit sync "$@"\'',
-        'switch': '\'!legit switch "$@"\'',
+        'switch': '\'!legit switch "$@"\''
     }
 
     print 'The following git aliases have been installed:\n'
@@ -626,3 +758,38 @@ def_cmd(
     fn=cmd_unpublish,
     usage='unpublish <branch>',
     help='Removes specified branch from the remote.')
+
+def_cmd(
+    name='update',
+    short=['updt'],
+    fn=cmd_update,
+    usage='update <branch>',
+    help='Pull the changes of the branch from the server. By default it executes on current branch')
+
+def_cmd(
+    name='mergemaster',
+    short=['mmstr'],
+    fn=cmd_merge_master,
+    usage='mergemaster',
+    help='Merge current branch in master')
+
+def_cmd(
+    name="devmerge",
+    short=['dmrg'],
+    fn=cmd_dev_merge,
+    usage='devmerge',
+    help='Update dev and merge it in current branch')
+
+def_cmd(
+    name="mergeclose",
+    short=['mcls'],
+    fn=cmd_merge_close,
+    usage='mergeclose',
+    help='Merge current branch in dev and close it')
+
+def_cmd(
+    name="newbranch",
+    short=['nbrch'],
+    fn=cmd_new_branch,
+    usage='newbranch',
+    help='Create a new branch, push it to the server and link both branches')

@@ -56,6 +56,26 @@ The Interface
     Installs legit git aliases.
 
 
+new aliases : 
+
+thoses are not usable as "git <alias>" yet. Use "<your legit alias> <alias>" ( see below in "The installation)
+
+``update`` 
+    Pull the changes of the branch from the server. By default it executes on current branch
+
+``mergemaste``
+    Merge current branch in master
+
+``devmerge``
+    Update dev and merge it in current branch //STILL IN DEVELOPMENT//
+
+``mergeclose``
+    Merge current branch in dev and close it
+
+``newbranch``
+    Create a new branch, push it to the server and link both branches
+
+
 The Installation
 ----------------
 
@@ -70,6 +90,7 @@ To install the git aliases, run the following command::
 
     $ legit install
 
+To use the new aliases create and alias / link to the executable "legit_r"
 
 Caveats
 -------
@@ -77,3 +98,9 @@ Caveats
 - All remote operations are carried out by the remote identified in `$ git config legit.remote remotename`
 - If a ``stash pop`` merge fails, Legit stops. I'd like to add checking for a merge failure, and undo the command with friendly error reporting.
 - Pip install is cumbersome to people unfamiliar with Python. Package. (Py2App + PyInstaller)
+
+Incoming updates
+----------------
+
+- possibility to use the aliases as "git <alias>"
+- fix of devmerg

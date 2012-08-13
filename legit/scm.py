@@ -106,6 +106,49 @@ def fetch():
 
     return repo.git.execute([git, 'fetch', remote.name])
 
+##################################################################
+
+def pull_noff():
+
+    repo_check()
+
+    return repo.git.execute([git, 'pull', '--no-ff'])
+
+def merge_noff(branch_name=''):
+    
+    repo_check()
+
+    return repo.git.execute([git, 'merge', '--no-ff', branch_name])
+
+
+def close_branch(branch_name=''):
+
+    repo_check()
+
+    return repo.git.execute([git,'branch','-d', branch_name])
+
+def create_branch(branch_name=''):
+
+    repo_check()
+
+    return repo.git.execute([git,'checkout','-b', branch_name])
+
+def push_branch(branch_name=''):
+
+    repo_check()
+
+    return repo.git.execute([git,'push','origin', branch_name])
+
+
+def link_branch(branch_name=''):
+
+    repo_check()
+
+    local = 'origin/'
+    local += branch_name
+    return repo.git.execute([git,'branch','--set-upstream',branch_name, local])
+
+###################################################################
 
 def smart_pull():
     'git log --merges origin/master..master'
