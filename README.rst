@@ -58,8 +58,6 @@ The Interface
 
 new aliases : 
 
-thoses are not usable as "git <alias>" yet. Use "<your legit alias> <alias>" ( see below in "The installation)
-
 ``update`` 
     Pull the changes of the branch from the server. By default it executes on current branch
 
@@ -79,18 +77,21 @@ thoses are not usable as "git <alias>" yet. Use "<your legit alias> <alias>" ( s
 The Installation
 ----------------
 
-Installing Legit is easy with pip::
+Installing our legit is easy.
 
-    $ pip install legit
+First get the repository ::
 
-You'll then have the wonderful ``legit`` command available. Run it within
-a repository.
+    $ git clone <repo>
 
-To install the git aliases, run the following command::
+Then create a link to the executable ::
 
-    $ legit install
+    $ [sudo] ln -s <path to the repo>/legit/legit_r /usr/local/bin/cozygit
 
-To use the new aliases create and alias / link to the executable "legit_r"
+Then install the aliases ::
+
+    $ cozygit install
+
+Then enjoy :D
 
 Caveats
 -------
