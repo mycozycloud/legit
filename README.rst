@@ -58,7 +58,7 @@ The Interface
 
 new aliases : 
 
-``update`` 
+``update [<branch>]`` 
     Pull the changes of the branch from the server. By default it executes on current branch
 
 ``mergemaste``
