@@ -1,29 +1,37 @@
 .. -*-restructuredtext-*-
 
-Legit: Git for Humans
-=====================
+CozyGit: Git for Humans for Cozy Cloud
+======================================
 
-Inspired by GitHub for Mac.
-
-
-The Concept
------------
-
-`GitHub for Mac <http://mac.github.com>`_ is not just a Git client.
-
-This `comment <http://www.hackerne.ws/item?id=2684483>`_ on Hacker News
-says it best:
-
-    They haven't re-created the git CLI tool in a GUI, they've created something different. They've created a tool that makes Git more accessible. Little things like auto-stashing when you switch branches will confuse git veterans, but it will make Git much easier to grok for newcomers because of the assumptions it makes about your Git workflow.
-
-Why not bring this innovation back to the command line?
+CozyGit is a package of git command to help with git's workflow for cozy
 
 
 The Interface
 -------------
 
+``update [<branch>]`` 
+    Pull the changes of the branch from the server. By default it executes on current branch
+
+``mergemaster``
+    Merge current branch in master
+
+``devmerge``
+    Update dev and merge it in current branch //STILL IN DEVELOPMENT//
+
+``mergeclose``
+    Merge current branch in dev and close it
+
+``newbranch <branch>``
+    Create a new branch, push it to the server and link both branches
+
 ``branches``
     Get a nice pretty list of available branches.
+
+
+Legit's command
+---------------
+
+We can still use legit's command : 
 
 ``sync [<branch>]``
     Syncronizes the given branch. Defaults to current branch.
@@ -77,11 +85,11 @@ new aliases :
 The Installation
 ----------------
 
-Installing our legit is easy.
+Installing CozyGit is easy.
 
 First get the repository ::
 
-    $ git clone <repo>
+    $ git clone https://github.com/locel/legit.git
 
 Then create a link to the executable ::
 
@@ -93,15 +101,3 @@ Then install the aliases ::
 
 Then enjoy :D
 
-Caveats
--------
-
-- All remote operations are carried out by the remote identified in `$ git config legit.remote remotename`
-- If a ``stash pop`` merge fails, Legit stops. I'd like to add checking for a merge failure, and undo the command with friendly error reporting.
-- Pip install is cumbersome to people unfamiliar with Python. Package. (Py2App + PyInstaller)
-
-Incoming updates
-----------------
-
-- possibility to use the aliases as "git <alias>"
-- fix of devmerg

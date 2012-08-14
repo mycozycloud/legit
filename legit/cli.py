@@ -535,7 +535,7 @@ def cmd_install(args):
         'update': '\'!cozygit update "$@"\'',
         'mergemaster': '\'!cozygit mergemaster\'',
         'devmerge': '\'!cozygit devmerge\'',
-        'newbranch': '\'!cozygit newbranch\'',
+        'newbranch': '\'!cozygit newbranch "$@"\'',
         'mergeclose': '\'!cozygit mergeclose\''
     }
 
@@ -796,5 +796,5 @@ def_cmd(
     name='newbranch',
     short=['nbrch'],
     fn=cmd_new_branch,
-    usage='newbranch',
+    usage='newbranch <branch>',
     help='Create a new branch, push it to the server and link both branches')
