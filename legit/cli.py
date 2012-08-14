@@ -273,7 +273,7 @@ def cmd_dev_merge(args):
         if repo.is_dirty():
             status_log(stash_it, 'Saving local changes.', sync=True)
 
-        repo.git.execute([legit_r, 'update', 'development'])
+        repo.git.execute([git, 'update', 'development'])
 
         switch_to(branch)
         
@@ -524,14 +524,19 @@ def cmd_install(args):
     """Installs legit git aliases."""
 
     aliases = {
-        'branches': '\'!legit branches\'',
-        'graft': '\'!legit graft "$@"\'',
-        'harvest': '\'!legit harvest "$@"\'',
-        'publish': '\'!legit publish "$@"\'',
-        'unpublish': '\'!legit unpublish "$@"\'',
-        'sprout': '\'!legit sprout "$@"\'',
-        'sync': '\'!legit sync "$@"\'',
-        'switch': '\'!legit switch "$@"\''
+        'branches': '\'!cozygit branches\'',
+        'graft': '\'!cozygit graft "$@"\'',
+        'harvest': '\'!cozygit harvest "$@"\'',
+        'publish': '\'!cozygit publish "$@"\'',
+        'unpublish': '\'!cozygit unpublish "$@"\'',
+        'sprout': '\'!cozygit sprout "$@"\'',
+        'sync': '\'!cozygit sync "$@"\'',
+        'switch': '\'!cozygit switch "$@"\'',
+        'update': '\'!cozygit update "$@"\'',
+        'mergemaster': '\'!cozygit mergemaster\'',
+        'devmerge': '\'!cozygit devmerge\'',
+        'newbranch': '\'!cozygit newbranch\'',
+        'mergeclose': '\'!cozygit mergeclose\''
     }
 
     print 'The following git aliases have been installed:\n'
@@ -774,21 +779,21 @@ def_cmd(
     help='Merge current branch in master')
 
 def_cmd(
-    name="devmerge",
+    name='devmerge',
     short=['dmrg'],
     fn=cmd_dev_merge,
     usage='devmerge',
     help='Update dev and merge it in current branch')
 
 def_cmd(
-    name="mergeclose",
+    name='mergeclose',
     short=['mcls'],
     fn=cmd_merge_close,
     usage='mergeclose',
     help='Merge current branch in dev and close it')
 
 def_cmd(
-    name="newbranch",
+    name='newbranch',
     short=['nbrch'],
     fn=cmd_new_branch,
     usage='newbranch',
