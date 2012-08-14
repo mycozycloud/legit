@@ -85,7 +85,7 @@ First get the repository ::
 
 Then create a link to the executable ::
 
-    $ [sudo] ln -s <path to the repo>/legit/legit_r /usr/local/bin/cozygit
+    $ [sudo] ln -s <absolute path to the repo>/legit/legit_r /usr/local/bin/cozygit
 
 Then install the aliases ::
 
