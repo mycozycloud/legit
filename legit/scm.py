@@ -148,6 +148,12 @@ def link_branch(branch_name=''):
     local += branch_name
     return repo.git.execute([git,'branch','--set-upstream',branch_name, local])
 
+def update_branch(branch_name=''):
+
+    repo_check()
+
+    return repo.git.execute([git, 'update', branch_name])
+
 ###################################################################
 
 def smart_pull():

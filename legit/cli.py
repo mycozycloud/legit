@@ -273,7 +273,7 @@ def cmd_dev_merge(args):
         if repo.is_dirty():
             status_log(stash_it, 'Saving local changes.', sync=True)
 
-        repo.git.execute([git, 'update', 'development'])
+        status_log(update_branch,'Updating development',branch_name='development')
 
         switch_to(branch)
         
