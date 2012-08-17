@@ -106,7 +106,12 @@ def fetch():
 
     return repo.git.execute([git, 'fetch', remote.name])
 
-##################################################################
+##################################################
+##### CozyGit's part                         #####
+##### To call those function from cli.py use #####
+##### status_log(fct_name, log_msg, args )   #####
+##################################################
+
 
 def pull_noff():
 
@@ -154,7 +159,9 @@ def update_branch(branch_name=''):
 
     return repo.git.execute([git, 'update', branch_name])
 
-###################################################################
+#################################
+##### End of CozyGit's part #####
+#################################
 
 def smart_pull():
     'git log --merges origin/master..master'

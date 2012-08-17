@@ -186,7 +186,9 @@ def cmd_sync(args):
         sys.exit(1)
 
 
-#####################################################################
+#############################
+##### CozyGit functions #####
+#############################
 
 def cmd_update(args):
 
@@ -195,6 +197,7 @@ def cmd_update(args):
     Defaults to current branch.
     """
 
+    # check if the branch exists and is pushed to the central repo
     if args.get(0):
         # Optional branch specifier.
         branch = fuzzy_match_branch(args.get(0))
@@ -253,24 +256,17 @@ def cmd_merge_master(args):
         print 'please specify a branch name'
         sys.exit(1)
        
-    if branch in get_branch_names(local=False):
+    if repo.is_dirty():
+        status_log(stash_it, 'Saving local changes.', sync=True)
+        
+    switch_to("master")        
+        
+    status_log(merge_noff , 'Merging master with the branch', branch_name=branch)
 
-        if repo.is_dirty():
-            status_log(stash_it, 'Saving local changes.', sync=True)
+    if unstash_index(sync=True):
+        status_log(unstash_it, 'Restoring local changes.', sync=True)
 
-        switch_to("master")        
-
-        status_log(merge_noff , 'Merging master with current branch', branch_name=branch)
-
-        if unstash_index(sync=True):
-            status_log(unstash_it, 'Restoring local changes.', sync=True)
-
-        switch_to(branch)
-
-    else:
-        print '{0} has not been published yet.'.format(
-            colored.yellow(branch))
-        sys.exit(1)
+    switch_to(branch)
 
 def cmd_dev_merge(args):
     """Stashes unstaged changes, updates developement, 
@@ -278,24 +274,30 @@ def cmd_dev_merge(args):
 
     Defaults to current branch.
     """
+    # get the branch's name
     branch = repo.head.ref.name
     
     if branch in get_branch_names(local=False):
 
+        # stash changes if needed
         if repo.is_dirty():
             status_log(stash_it, 'Saving local changes.', sync=True)
 
+        # update development
         status_log(update_branch,'Updating development',branch_name='development')
 
+        # switch to original branch
         switch_to(branch)
         
-        status_log(merge_noff, 'Merging dev in current branch', branch_name="development")
+        # merge development in the branch
+        status_log(merge_noff, 'Merging development in the branch', branch_name="development")
 
+        # unstash the changes
         if unstash_index(sync=True):
             status_log(unstash_it, 'Restoring local changes.', sync=True)
     
     else:
-        print '{0} has not been published yet.'.format(
+        print branch + ' has not been published yet.'.format(
             colored.yellow(branch))
         sys.exit(1)
 
@@ -332,7 +334,10 @@ def cmd_new_branch(args):
         print "no branch name specified. \n usage : new_branch <name>"
     
 
-#######################################################################
+##################################################
+##### See at the end for the rest of CozyGit #####
+##################################################
+
 
 def cmd_sprout(args):
     """Creates a new branch of given name from given branch.
@@ -535,6 +540,12 @@ def cmd_settings(args):
 
     sys.exit()
 
+
+####################################################################
+##### Edit this function to be able to install the new aliases #####
+##### Syntax :                                                 #####
+##### '\'!cozygit <cmd name> <"$@" if cmd take an arg>\''      #####
+####################################################################
 
 def cmd_install(args):
     """Installs legit git aliases."""
@@ -779,6 +790,10 @@ def_cmd(
     fn=cmd_unpublish,
     usage='unpublish <branch>',
     help='Removes specified branch from the remote.')
+
+###########################################
+##### Definition of CozyGit's command #####
+###########################################
 
 def_cmd(
     name='update',
