@@ -239,7 +239,19 @@ def cmd_merge_master(args):
     Defaults to current branch.
     """
 
-    branch = repo.head.ref.name
+    if args.get(0):
+        # Optional branch specifier.
+        branch = fuzzy_match_branch(args.get(0))
+        if branch:
+            is_external = True
+            original_branch = repo.head.ref.name
+        else:
+            print "{0} doesn't exist. Use a branch that does.".format(
+                colored.yellow(args.get(0)))
+            sys.exit(1)
+    else:
+        print 'please specify a branch name'
+        sys.exit(1)
        
     if branch in get_branch_names(local=False):
 
@@ -278,6 +290,9 @@ def cmd_dev_merge(args):
         switch_to(branch)
         
         status_log(merge_noff, 'Merging dev in current branch', branch_name="development")
+
+        if unstash_index(sync=True):
+            status_log(unstash_it, 'Restoring local changes.', sync=True)
     
     else:
         print '{0} has not been published yet.'.format(
@@ -292,10 +307,11 @@ def cmd_merge_close(args):
     branch = b
 
     if repo.is_dirty():
-
         print 'you have unpushed changes, please commit/checkout and push them before deleting the branch'
     elif b=='development':
         print 'you cannot delete the branch "development" with this function'
+    elif b=='master':
+        print 'you cannont delete the branch "master"'        
     else:
         switch_to("development")    
         status_log(merge_noff, 'Merging current branch in dev',branch_name=branch)

@@ -10,28 +10,48 @@ The Interface
 -------------
 
 ``update [<branch>]`` 
-    Pull the changes of the branch from the server. By default it executes on current branch
+    Pull the changes of the branch from the server. By default it executes on current branch ::
+    
+    $ git checkout development
+    $ git pull --no-ff
+    $ git checkout <branch>
 
 ``mergemaster``
-    Merge current branch in master
+    Merge current branch in master ::
+    
+    $ git checkout master
+    $ git merge --no-ff <current branch>
+    $ git checkout <current branch>
 
 ``devmerge``
-    Update dev and merge it in current branch //STILL IN DEVELOPMENT//
+    Update dev and merge it in current branch //STILL IN DEVELOPMENT// ::
+
+    $ git checkout development
+    $ git pull --no-ff
+    $ git checkout feature/1stFeature
+    $ git merge -–no-ff development
 
 ``mergeclose``
-    Merge current branch in dev and close it
+    Merge current branch in dev and close it ::
+
+    $ git checkout development
+    $ git merge -–no-ff <current branch>
+    $ git branch –d <current branch>
 
 ``newbranch <branch>``
-    Create a new branch, push it to the server and link both branches
+    Create a new branch, push it to the server and link both branches ::
 
-``branches``
-    Get a nice pretty list of available branches.
-
+    $ git checkout -b <branch>
+    $ git push origin <branch>
+    $ git branch --set-upstream <branch> origin/<branch>
 
 Legit's command
 ---------------
 
 We can still use legit's command : 
+
+``branches``
+    Get a nice pretty list of available branches.
 
 ``sync [<branch>]``
     Syncronizes the given branch. Defaults to current branch.
