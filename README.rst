@@ -16,12 +16,12 @@ The Interface
     $ git pull --no-ff
     $ git checkout <branch>
 
-``mergemaster``
-    Merge current branch in master ::
+``mergemaster <branch>``
+    Merge the branch in master ::
     
     $ git checkout master
-    $ git merge --no-ff <current branch>
-    $ git checkout <current branch>
+    $ git merge --no-ff <branch>
+    $ git checkout <branch>
 
 ``devmerge``
     Update dev and merge it in current branch //STILL IN DEVELOPMENT// ::
