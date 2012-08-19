@@ -114,12 +114,14 @@ def fetch():
 
 
 def pull_noff():
+    '''performs a non forward pull on current branch '''
 
     repo_check()
 
     return repo.git.execute([git, 'pull', '--no-ff'])
 
 def merge_noff(branch_name=''):
+    '''Performs a non forward mege with given branch on current branch'''
     
     repo_check()
 
@@ -127,18 +129,21 @@ def merge_noff(branch_name=''):
 
 
 def close_branch(branch_name=''):
+    '''Delete current branch locally'''
 
     repo_check()
 
     return repo.git.execute([git,'branch','-d', branch_name])
 
 def create_branch(branch_name=''):
+    '''Create a new branch and makes it current branch'''
 
     repo_check()
 
     return repo.git.execute([git,'checkout','-b', branch_name])
 
 def push_branch(branch_name=''):
+    '''Shortcut to git push origin branch_name'''
 
     repo_check()
 
@@ -146,14 +151,16 @@ def push_branch(branch_name=''):
 
 
 def link_branch(branch_name=''):
+    '''Link current branch with origin remote'''
 
     repo_check()
 
     local = 'origin/'
     local += branch_name
-    return repo.git.execute([git,'branch','--set-upstream',branch_name, local])
+    return repo.git.execute([git,'branch','--set-upstream', branch_name, local])
 
 def update_branch(branch_name=''):
+    '''Call to homemade function updatei which updates development branch'''
 
     repo_check()
 
