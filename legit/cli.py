@@ -14,7 +14,6 @@ from time import sleep
 
 import clint.resources
 from clint import args
-from clint.eng import join as eng_join
 from clint.textui import colored, puts, columns
 
 from .core import __version__
@@ -245,10 +244,7 @@ def cmd_merge_master(args):
     if args.get(0):
         # Optional branch specifier.
         branch = fuzzy_match_branch(args.get(0))
-        if branch:
-            is_external = True
-            original_branch = repo.head.ref.name
-        else:
+        if not branch:
             print "{0} doesn't exist. Use a branch that does.".format(
                 colored.yellow(args.get(0)))
             sys.exit(1)
@@ -261,7 +257,7 @@ def cmd_merge_master(args):
         
     switch_to("master")        
         
-    status_log(merge_noff , 'Merging master with the branch', branch_name=branch)
+    status_log(merge_noff, 'Merging master with the branch', branch_name=branch)
 
     if unstash_index(sync=True):
         status_log(unstash_it, 'Restoring local changes.', sync=True)
