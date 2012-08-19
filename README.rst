@@ -1,24 +1,54 @@
-Legit: Git for Humans
-=====================
+.. -*-restructuredtext-*-
 
-Inspired by GitHub for Mac™.
+CozyGit: Git for Humans for Cozy Cloud
+======================================
 
-
-The Concept
------------
-
-`GitHub for Mac <http://mac.github.com>`_ is not just a Git client.
-
-This `comment <http://www.hackerne.ws/item?id=2684483>`_ on Hacker News
-says it best:
-
-    They haven't re-created the git CLI tool in a GUI, they've created something different. They've created a tool that makes Git more accessible. Little things like auto-stashing when you switch branches will confuse git veterans, but it will make Git much easier to grok for newcomers because of the assumptions it makes about your Git workflow.
-
-Why not bring this innovation back to the command line?
+CozyGit is a package of git command to help with git's workflow for cozy
 
 
 The Interface
 -------------
+
+``update [<branch>]`` 
+    Pull the changes of the branch from the server. By default it executes on current branch ::
+    
+    $ git checkout development
+    $ git pull --no-ff
+    $ git checkout <branch>
+
+``mergemaster <branch>``
+    Merge the branch in master ::
+    
+    $ git checkout master
+    $ git merge --no-ff <branch>
+    $ git checkout <branch>
+
+``devmerge``
+    Update dev and merge it in current branch //STILL IN DEVELOPMENT// ::
+
+    $ git checkout development
+    $ git pull --no-ff
+    $ git checkout feature/1stFeature
+    $ git merge -–no-ff development
+
+``mergeclose``
+    Merge current branch in dev and close it ::
+
+    $ git checkout development
+    $ git merge -–no-ff <current branch>
+    $ git branch –d <current branch>
+
+``newbranch <branch>``
+    Create a new branch, push it to the server and link both branches ::
+
+    $ git checkout -b <branch>
+    $ git push origin <branch>
+    $ git branch --set-upstream <branch> origin/<branch>
+
+Legit's command
+---------------
+
+We can still use legit's command : 
 
 ``branches``
     Get a nice pretty list of available branches.
@@ -37,9 +67,12 @@ The Interface
     Creates a new branch off of the specified branch.
     Swiches to it immediately.
 
+``harvest [<branch>] <into-branch>``
+    Auto-Merge/Rebase of specified branch changes into the second branch.
+
 ``graft <branch> <into-branch>``
-    Merges specified branch into the second branch, and removes it.
-    You can only graft unpublished branches.
+    Auto-Merge/Rebase of specified branch into the second branch.
+    Immediately removes specified branch. You can only graft unpublished branches.
 
 ``publish <branch>``
     Publishes specified branch to the remote.
@@ -47,28 +80,44 @@ The Interface
 ``unpublish <branch>``
     Removes specified branch from the remote.
 
-``add`` & ``commit`` are also available, but you should just use ``git`` for those.
+``install``
+    Installs legit git aliases.
+
+
+new aliases : 
+
+``update [<branch>]`` 
+    Pull the changes of the branch from the server. By default it executes on current branch
+
+``mergemaste``
+    Merge current branch in master
+
+``devmerge``
+    Update dev and merge it in current branch //STILL IN DEVELOPMENT//
+
+``mergeclose``
+    Merge current branch in dev and close it
+
+``newbranch``
+    Create a new branch, push it to the server and link both branches
 
 
 The Installation
 ----------------
 
-**Warning**: don't use this for anything mission critical. It's still new.
+Installing CozyGit is easy.
 
-Installing Legit is easy with pip::
+First get the repository ::
 
-    $ pip install legit
+    $ git clone https://github.com/locel/legit.git
 
-You'll then have the wonderful ``legit`` command available. Run it within
-a repository.
+Then create a link to the executable ::
 
-Binaries will be available soon.
+    $ [sudo] ln -s <absolute path to the repo>/legit/legit_r /usr/local/bin/cozygit
 
+Then install the aliases ::
 
-Caveats
--------
+    $ cozygit install
 
-- All remote operations are carried out by the first remote found.
-- If a ``stash pop`` merge fails, Legit stops. I'd like to add checking
- for a merge failure, and undo the command with friendly error reporting.
-- Pip install is cumbersome to people unfamiliar with Python. Package. (Py2App + PyInstaller)
+Then enjoy :D
+
